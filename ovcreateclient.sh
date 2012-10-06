@@ -62,7 +62,7 @@ cat >> client.conf << EOF
 client
 dev tun
 proto tcp-client
-remote `wget -qO- whatismyip.org` 443
+remote `wget -qO- ifconfig.me/ip` 443
 resolv-retry infinite
 cipher AES-256-CBC
 # Cles
