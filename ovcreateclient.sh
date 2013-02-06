@@ -56,9 +56,9 @@ esac
 
 sudo mkdir /etc/openvpn/clientconf/$1
 sudo cp /etc/openvpn/ca.crt /etc/openvpn/ta.key keys/$1.crt keys/$1.key /etc/openvpn/clientconf/$1/
-
+sudo chmod -R 777 /etc/openvpn/clientconf/$1
 cd /etc/openvpn/clientconf/$1
-cat >> client.conf << EOF
+cat >> /etc/openvpn/clientconf/$1/client.conf << EOF
 # Client
 client
 dev tun
