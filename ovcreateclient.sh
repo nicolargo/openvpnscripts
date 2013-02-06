@@ -87,7 +87,7 @@ sudo cp client.conf client-vista-7.conf
 # route-delay 2
 # permet de corriger les problème de routage sur windows vista et windows 7
 sudo echo route-method exe >> /etc/openvpn/clientconf/$1/client-vista-7.conf
-sudo route-delay 2 >> /etc/openvpn/clientconf/$1/client-vista-7.conf
+sudo echo route-delay 2 >> /etc/openvpn/clientconf/$1/client-vista-7.conf
 sudo zip $1.zip *.*
 
 echo "Creation du client OpenVPN $1 termine"
