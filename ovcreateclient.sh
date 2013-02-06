@@ -13,7 +13,28 @@
 # Syntaxe: # sudo ./ovcreateclient.sh <nomduclient>
 #
 VERSION="0.3"
-
+#savoir si ont est sur une distribution type debian ou read hat
+if [ ! -f /etc/debian_version ]; then
+DISTRIB_ID="Debian"
+fi
+# verifier si sudo et installer
+if [ ! -e "/usr/bin/sudo" ]; then
+# si sudo n'est pas installer ont l'install
+if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
+apt-get -y install sudo
+else
+yum -y install sudo
+fi
+fi
+# verifier si zip et installer
+if [ ! -e "/usr/bin/zip" ]; then
+# si zip n'est pas installer ont l'install
+if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
+apt-get -y install zip
+else
+yum -y install zip
+fi
+fi
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
   echo "Le script doit �tre lanc� en root: # sudo $0 <nomduclient>" 1>&2
@@ -81,13 +102,13 @@ EOF
 # ajout de la compatibilité pour windows xp (la même config sauf que je change le pour pouvoir les diférencier)
 sudo cp client.conf client-xp.ovpn
 # ajout de la compatibilité pour windows vista et windows 7
-sudo cp client.conf client-vista-7.conf
+sudo cp client.conf client-vista-7.ovpn
 # ajout de ligne suivante a la fin du fichier de config
 # route-method exe
 # route-delay 2
 # permet de corriger les problème de routage sur windows vista et windows 7
-sudo echo route-method exe >> /etc/openvpn/clientconf/$1/client-vista-7.conf
-sudo echo route-delay 2 >> /etc/openvpn/clientconf/$1/client-vista-7.conf
+sudo echo route-method exe >> /etc/openvpn/clientconf/$1/client-vista-7.ovpn
+sudo echo route-delay 2 >> /etc/openvpn/clientconf/$1/client-vista-7.ovpn
 sudo zip $1.zip *.*
 
 echo "Creation du client OpenVPN $1 termine"
