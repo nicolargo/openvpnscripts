@@ -5,17 +5,18 @@
 #
 # Authors:
 # - Nicolargo (aka Nicolas Hennion)
-# - François ANTON (add choice for certificate password)
+# - Franï¿½ois ANTON (add choice for certificate password)
+# - Kimpe Andy (add conpatibility for windows vista and windows 7)
 #
 # GPLv3
 #
 # Syntaxe: # sudo ./ovcreateclient.sh <nomduclient>
 #
-VERSION="0.2"
+VERSION="0.3"
 
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
-  echo "Le script doit être lancé en root: # sudo $0 <nomduclient>" 1>&2
+  echo "Le script doit ï¿½tre lancï¿½ en root: # sudo $0 <nomduclient>" 1>&2
   exit 1
 fi
 
@@ -77,8 +78,16 @@ persist-tun
 comp-lzo
 verb 3
 EOF
-sudo cp client.conf client.ovpn
-
+# ajout de la compatibilitÃ© pour windows xp (la mÃªme config sauf que je change le pour pouvoir les difÃ©rencier)
+sudo cp client.conf client-xp.ovpn
+# ajout de la compatibilitÃ© pour windows vista et windows 7
+sudo cp client.conf client-vista-7.conf
+# ajout de ligne suivante a la fin du fichier de config
+# route-method exe
+# route-delay 2
+# permet de corriger les problÃ¨me de routage sur windows vista et windows 7
+sudo echo route-method exe >> /etc/openvpn/clientconf/$1/client-vista-7.conf
+sudo route-delay 2 >> /etc/openvpn/clientconf/$1/client-vista-7.conf
 sudo zip $1.zip *.*
 
 echo "Creation du client OpenVPN $1 termine"
