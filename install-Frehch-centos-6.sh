@@ -12,6 +12,17 @@ echo -e "\033[34m###########################""\033[00m""\033[37m################
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
+country=FR
+echo "Entrez les rpemierre lettre de votre pays en majuscule"
+echo "ex : pour la france FR"
+read -e -p "Entrez les rpemierre lettre de votre pays en majuscule  :" -i $country country
+read -e -p "Entrez le numero de votre departemant " dep
+read -e -p "Entrez le numero de votre departemant " dep
+read -e -p "Entrez le protocol udp ou tcp" proto
+read -e -p "Entrez le numéro de port" port
+read -e -p " Entrez le nom de votre ville" ville
+read -e -p "Entrez le nom de votre entreprise ou si particulier entrez le nom du serveur" org
+read -e -p "Entrez votre adresse mail" email
 
 yum -y update
 yum -y install gcc make rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig sudo zip unzip
@@ -22,13 +33,6 @@ rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
 cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/ /etc/openvpn/
-country=FR
-dep=59
-proto=tcp
-port=443
-ville=Roubaix
-org=s2.frabelu.eu
-email=andykimpe@gmail.com
 chmod 755 *
 rm -f /etc/openvpn/easy-rsa/2.0/vars
 touch /etc/openvpn/easy-rsa/2.0/vars
