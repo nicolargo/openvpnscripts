@@ -10,7 +10,7 @@ install packet git and dos2unix
 
 installer les packet git et dos2unix
 
-apt-get -y install git dos2unix or yum -y install git dos2unix
+apt-get -y install git dos2unix or (ou) yum -y install git dos2unix
 cd /tmp
 git clone git://github.com/nicolargo/openvpnscripts.git
 dos2unix openvpnscripts/install.sh
