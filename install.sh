@@ -168,8 +168,8 @@ chmod 755 /etc/init.d/NAT
 insserv /etc/init.d/NAT
 update-rc.d NAT defaults
 cp /tmp/openvpnscripts/ovcreateclient-debian.sh /bin/ovcreateclient
-dos2unix /ovcreateclient
-chmod +x ovcreateclient
+dos2unix /bin/ovcreateclient
+chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
 else
 yum -y update
@@ -264,7 +264,7 @@ service iptables restart
 service openvpn restart
 mkdir /etc/openvpn/clientconf
 cp /tmp/openvpnscripts/ovcreateclient-centos.sh /bin/ovcreateclient
-dos2unix /ovcreateclient
-chmod +x ovcreateclient
+dos2unix /bin/ovcreateclient
+chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
 fi
