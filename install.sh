@@ -170,7 +170,7 @@ cp /tmp/openvpnscripts/ovcreateclient-debian.sh /bin/openvpnscripts
 dos2unix /openvpnscripts
 chmod +x openvpnscripts
 rm -rf /tmp/openvpnscripts/
-else
+fi
 yum -y update
 yum -y install gcc make rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig sudo zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
@@ -266,4 +266,3 @@ cp /tmp/openvpnscripts/openvpnscripts-centos.sh /bin/openvpnscripts
 dos2unix /openvpnscripts
 chmod +x openvpnscripts
 rm -rf /tmp/openvpnscripts/
-fi
