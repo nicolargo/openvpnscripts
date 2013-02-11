@@ -17,7 +17,6 @@ echo "Entrez les rpemierre lettre de votre pays en majuscule"
 echo "ex : pour la france FR"
 read -e -p "Entrez les rpemierre lettre de votre pays en majuscule  :" -i $country country
 read -e -p "Entrez le numero de votre departemant " dep
-read -e -p "Entrez le numero de votre departemant " dep
 read -e -p "Entrez le protocol udp ou tcp" proto
 read -e -p "Entrez le numéro de port" port
 read -e -p " Entrez le nom de votre ville" ville
