@@ -61,7 +61,7 @@ read -e -p "Enter your company name or if particular enter the name of the serve
 read -e -p "Enter your email address : " email
 fi
 
-if [ ! -f /etc/debian_version ]
+if [ -f /etc/debian_version ]
 then
 #ici les commande pour debian ubuntu
 apt-get update
