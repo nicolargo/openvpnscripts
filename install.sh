@@ -1,7 +1,7 @@
 #!/bin/bash
 # centos 6 , ubuntu and debian
 # vérifier si la distribution et de type debian ou read hat
-if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UT8" ]; then
+if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UTF-8" ]; then
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
@@ -167,9 +167,9 @@ EOF
 chmod 755 /etc/init.d/NAT
 insserv /etc/init.d/NAT
 update-rc.d NAT defaults
-cp /tmp/openvpnscripts/ovcreateclient-debian.sh /bin/openvpnscripts
-dos2unix /openvpnscripts
-chmod +x openvpnscripts
+cp /tmp/openvpnscripts/ovcreateclient-debian.sh /bin/ovcreateclient
+dos2unix /ovcreateclient
+chmod +x ovcreateclient
 rm -rf /tmp/openvpnscripts/
 else
 yum -y update
@@ -263,8 +263,8 @@ service iptables save
 service iptables restart
 service openvpn restart
 mkdir /etc/openvpn/clientconf
-cp /tmp/openvpnscripts/openvpnscripts-centos.sh /bin/openvpnscripts
-dos2unix /openvpnscripts
-chmod +x openvpnscripts
+cp /tmp/openvpnscripts/ovcreateclient-centos.sh /bin/ovcreateclient
+dos2unix /ovcreateclient
+chmod +x ovcreateclient
 rm -rf /tmp/openvpnscripts/
 fi
