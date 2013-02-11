@@ -182,6 +182,7 @@ rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
 cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/ /etc/openvpn/
+cd /etc/openvpn/easy-rsa/2.0
 chmod 755 *
 rm -f /etc/openvpn/easy-rsa/2.0/vars
 touch /etc/openvpn/easy-rsa/2.0/vars
@@ -200,7 +201,7 @@ cat > /etc/openvpn/easy-rsa/2.0/vars <<EOF
 # This variable should point to
 # the top level of the easy-rsa
 # tree.
-export EASY_RSA="`pwd`"
+export EASY_RSA="/etc/openvpn/easy-rsa/2.0/"
 
 #
 # This variable should point to
@@ -262,7 +263,7 @@ export PKCS11_MODULE_PATH=changeme
 export PKCS11_PIN=1234
 EOF
 
-cd /etc/openvpn/easy-rsa/2.0
+mkdir keys
 chmod 755 *
 source ./vars
 ./vars
