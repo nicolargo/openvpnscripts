@@ -14,7 +14,8 @@ apt-get -y install git dos2unix or (ou) yum -y install git dos2unix
 cd /tmp
 git clone git://github.com/nicolargo/openvpnscripts.git
 dos2unix openvpnscripts/install.sh
-/openvpnscripts/install.sh
+chmod +x openvpnscripts/install.sh
+openvpnscripts/install.sh
 
 après installation pour crée un client executer ovcreateclient non du client
 
