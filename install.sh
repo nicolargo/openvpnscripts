@@ -64,7 +64,7 @@ read -e -p "Enter your company name or if particular enter the name of the serve
 read -e -p "Enter your email address" email
 fi
 
-if [ "$DISTRIB_ID" = "Ubuntu" -o "$DISTRIB_ID" = "Debian" ]; then
+if [ "$DISTRIB_ID" = "Debian" -o "$DISTRIB_ID" = "Ubuntu" ]; then
 #ici les commande pour debian ubuntu
 apt-get update
 apt-get -y dist-upgrade
