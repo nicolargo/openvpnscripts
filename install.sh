@@ -173,7 +173,7 @@ chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
 else
 yum -y update
-yum -y install gcc make rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig sudo zip unzip sudo
+yum -y install gcc make rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
 yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-1.el6.rf.$(uname -m).rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
