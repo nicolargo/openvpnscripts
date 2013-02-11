@@ -15,13 +15,13 @@
 VERSION="0.3"
 port=$(cat /etc/openvpnport)
 # verifier si sudo et installer
-if [ -e "/usr/bin/sudo" ]
+if [ ! -e "/usr/bin/sudo" ]
 then
 # si sudo n'est pas installer ont l'install
 yum -y install sudo
 fi
 # verifier si zip et installer
-if [ -e "/usr/bin/zip" ]
+if [ ! -e "/usr/bin/zip" ]
 then
 # si zip n'est pas installer ont l'install
 yum -y install zip
@@ -46,7 +46,7 @@ echo "Creation du client OpenVPN: $1"
 sudo useradd $1 -s /bin/false
 passwd $1
 sudo mkdir /etc/openvpn/clientconf/$1
-sudo cp /etc/openvpn/ca.crt /etc/openvpn/clientconf/$1/
+sudo cp /etc/openvpn/easy-rsa/2.0/keys/ca.crt /etc/openvpn/clientconf/$1/
 sudo chmod -R 777 /etc/openvpn/clientconf/$1
 cd /etc/openvpn/clientconf/$1
 cat >> /etc/openvpn/clientconf/$1/client.conf << EOF
@@ -91,7 +91,7 @@ echo "Creation of OpenVPN client : $1"
 sudo useradd $1 -s /bin/false
 passwd $1
 sudo mkdir /etc/openvpn/clientconf/$1
-sudo cp /etc/openvpn/ca.crt /etc/openvpn/clientconf/$1/
+sudo cp /etc/openvpn/easy-rsa/2.0/keys/ca.crt /etc/openvpn/clientconf/$1/
 sudo chmod -R 777 /etc/openvpn/clientconf/$1
 cd /etc/openvpn/clientconf/$1
 cat >> /etc/openvpn/clientconf/$1/client.conf << EOF
