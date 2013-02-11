@@ -185,7 +185,7 @@ chmod 755 *
 rm -f /etc/openvpn/easy-rsa/2.0/vars
 touch /etc/openvpn/easy-rsa/2.0/vars
 cat > /etc/openvpn/easy-rsa/2.0/vars <<EOF
-e# easy-rsa parameter settings
+# easy-rsa parameter settings
 
 # NOTE: If you installed from an RPM,
 # don't edit this file in place in
