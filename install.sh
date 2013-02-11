@@ -1,9 +1,6 @@
 #!/bin/bash
 # centos 6 , ubuntu and debian
 # vérifier si la distribution et de type debian ou read hat
-if [ ! -f /etc/debian_version ]; then
-DISTRIB_ID="Debian"
-fi
 if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UT8" ]; then
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
@@ -64,7 +61,7 @@ read -e -p "Enter your company name or if particular enter the name of the serve
 read -e -p "Enter your email address" email
 fi
 
-if [ "$DISTRIB_ID" = "Debian" -o "$DISTRIB_ID" = "Ubuntu" ]; then
+if [ ! -f /etc/debian_version ]
 #ici les commande pour debian ubuntu
 apt-get update
 apt-get -y dist-upgrade
