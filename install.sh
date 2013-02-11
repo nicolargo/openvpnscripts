@@ -172,6 +172,7 @@ dos2unix /bin/ovcreateclient
 chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
 else
+cd /root
 yum -y update
 yum -y install gcc make rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
