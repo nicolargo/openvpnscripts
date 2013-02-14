@@ -78,7 +78,7 @@ export OPENSSL="openssl"
 export PKCS11TOOL="pkcs11-tool"
 export GREP="grep"
 export KEY_CONFIG=/etc/openvpn/easy-rsa/openssl.cnf
-export KEY_DIR="$EASY_RSA/keys"
+export KEY_DIR="/etc/openvpn/easy-rsa/keys"
 echo NOTE: If you run ./clean-all, I will be doing a rm -rf on $KEY_DIR
 export PKCS11_MODULE_PATH="dummy"
 export PKCS11_PIN="dummy"
@@ -225,7 +225,7 @@ export KEY_CONFIG=/etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf
 # a rm -rf on this directory
 # so make sure you define
 # it correctly!
-export KEY_DIR="$EASY_RSA/keys"
+export KEY_DIR="/etc/openvpn/easy-rsa/2.0/keys"
 
 # Issue rm -rf warning
 echo NOTE: If you run ./clean-all, I will be doing a rm -rf on $KEY_DIR
