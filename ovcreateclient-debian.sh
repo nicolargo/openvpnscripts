@@ -14,6 +14,7 @@
 #
 VERSION="0.3"
 port=$(cat /etc/openvpnport)
+proto=$(cat /etc/openvpnproto)
 # verifier si sudo et installer
 if [ ! -e "/usr/bin/sudo" ]; then
 # si sudo n'est pas installer ont l'install
@@ -72,7 +73,7 @@ cat >> /etc/openvpn/clientconf/$1/client.conf << EOF
 # Client
 client
 dev tun
-proto tcp-client
+proto $proto
 remote `wget -qO- ifconfig.me/ip` $port
 resolv-retry infinite
 cipher AES-256-CBC
