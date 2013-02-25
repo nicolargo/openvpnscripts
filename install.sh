@@ -26,6 +26,9 @@ read -e -p "Entrez le numéro de port qui sera utilise par le serveur (recommand
 cat > /etc/openvpnport <<EOF
 $port
 EOF
+cat > /etc/openvpnproto<<EOF
+$proto
+EOF
 read -e -p "Entrez le protocol udp ou tcp : " proto
 read -e -p " Entrez le nom de votre ville : " ville
 read -e -p "Entrez le nom de votre entreprise ou si vous ete un particulier entrez le nom de votre serveur : " -i $org org
