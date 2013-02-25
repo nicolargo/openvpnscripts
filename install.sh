@@ -58,6 +58,9 @@ read -e -p "Enter the port number that will be used by the server (tcp 443 recom
 cat > /etc/openvpnport <<EOF
 $port
 EOF
+cat > /etc/openvpnproto<<EOF
+$proto
+EOF
 read -e -p "Enter the protocol tcp or udp : " proto
 read -e -p "Enter the name of your city : " ville
 read -e -p "Enter your company name or if particular enter the name of the server : " -i $org org
