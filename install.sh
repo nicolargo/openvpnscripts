@@ -185,11 +185,33 @@ echo "Entrez votre numéro de version de read-hat"
 echo "ex: pour centos 6 entrez 6 pour centos 5 entrez 5"
 read -e -p "Entrez votre numéro de version de read-hat : " VERSION
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
+if [ "$VERSION" = "17" -o "$VERSION" = "18" ]
+then
+mkdir /etc/openvpn
+cd /etc/openvpn
+git clone git://github.com/OpenVPN/easy-rsa.git /etc/openvpn/test
+mkdir /etc/openvpn/easy-rsa
+cp -R /etc/openvpn/test/easy-rsa/* /etc/openvpn/easy-rsa
+rm -rf /etc/openvpn/test
+else
+echo "Centos"
+fi
 else
 echo "Enter the version number of read-hat"
 echo "eg: centos 6 to enter 6 centos 5 to enter 5"
 read-e-p "Enter the version number of read-hat : " VERSION
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
+if [ "$VERSION" = "17" -o "$VERSION" = "18" ]
+then
+mkdir /etc/openvpn
+cd /etc/openvpn
+git clone git://github.com/OpenVPN/easy-rsa.git /etc/openvpn/test
+mkdir /etc/openvpn/easy-rsa
+cp -R /etc/openvpn/test/easy-rsa/* /etc/openvpn/easy-rsa
+rm -rf /etc/openvpn/test
+else
+echo "Centos"
+fi
 fi
 yum -y install gcc make iptables rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
