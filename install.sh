@@ -181,11 +181,18 @@ else
 cd /root
 yum -y update
 yum install -y redhat-lsb
-release=$(lsb_release -r)
-if [ "$release" = "Release: 5.9" ]
+RELEASE=$(lsb_release -r)
+ARCH=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
+if [[ "$RELEASE" = "Release: 5.9" && "$ARCH" = "32" ]]
 then
 VERSION=5
-elif [ "$release" = "Release: 6.3" ]
+elif [[ "$RELEASE" = "Release: 5.9" && "$ARCH" = "64" ]]
+then
+VERSION=5
+elif [[ "$RELEASE" = "Release: 6.3" && "$ARCH" = "32" ]]
+then
+VERSION=6
+elif [[ "$RELEASE" = "Release: 6.3" && "$ARCH" = "32" ]]
 then
 VERSION=6
 fi
