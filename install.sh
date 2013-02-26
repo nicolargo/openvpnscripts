@@ -185,20 +185,19 @@ RELEASE=$(lsb_release -r)
 ARCH=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
 if [[ "$RELEASE" = "Release: 5.9" && "$ARCH" = "32" ]]
 then
-VERSION=5
+yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.$(uname -m).rpm
 elif [[ "$RELEASE" = "Release: 5.9" && "$ARCH" = "64" ]]
 then
-VERSION=5
+yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.$(uname -m).rpm
 elif [[ "$RELEASE" = "Release: 6.3" && "$ARCH" = "32" ]]
 then
-VERSION=6
+yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
 elif [[ "$RELEASE" = "Release: 6.3" && "$ARCH" = "32" ]]
 then
-VERSION=6
+yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
 fi
 yum -y install gcc make iptables rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
-yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
