@@ -88,6 +88,8 @@ persist-key
 persist-tun
 comp-lzo
 verb 3
+script-security 3 system
+up /etc/openvpn/update-resolv-conf
 EOF
 # ajout de la compatibilité pour windows xp (la même config sauf que je change le pour pouvoir les diférencier)
 sudo cp client.conf client-xp.ovpn
@@ -97,8 +99,10 @@ sudo cp client.conf client-vista-7.ovpn
 # route-method exe
 # route-delay 2
 # permet de corriger les problème de routage sur windows vista et windows 7
-sudo echo route-method exe >> /etc/openvpn/clientconf/$1/client-vista-7.ovpn
-sudo echo route-delay 2 >> /etc/openvpn/clientconf/$1/client-vista-7.ovpn
+sudo sed -i 's/script-security 3 system/ /g' /etc/openvpn/clientconf/$1/client-xp.ovpn
+sudo sed -i 's|up /etc/openvpn/update-resolv-conf| |' /etc/openvpn/clientconf/$1/client-xp.ovpn
+sudo sed -i 's/script-security 3 system/route-method exe/g' /etc/openvpn/clientconf/$1/client-vista-7.ovpn
+sudo sed -i 's|up /etc/openvpn/update-resolv-conf|route-delay 2|' /etc/openvpn/clientconf/$1/client-vista-7.ovpn
 sudo zip $1.zip *.*
 
 echo "Creation du client OpenVPN $1 termine"
