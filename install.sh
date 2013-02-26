@@ -22,14 +22,14 @@ echo "Entrez les premierre lettre de votre pays en majuscule"
 echo "ex : pour la france FR"
 read -e -p "Entrez les premierre lettre de votre pays en majuscule  : " -i $country country
 read -e -p "Entrez le numero de votre departemant : " dep
-read -e -p "Entrez le numéro de port qui sera utilise par le serveur (recommander 443 tcp) : " port
+read -e -p "Entrez le numéro de port qui sera utilise par le serveur (recommander 443) : " port
 cat > /etc/openvpnport <<EOF
 $port
 EOF
+read -e -p "Entrez le protocol udp ou tcp (recommander tcp) : " proto
 cat > /etc/openvpnproto<<EOF
 $proto
 EOF
-read -e -p "Entrez le protocol udp ou tcp : " proto
 read -e -p " Entrez le nom de votre ville : " ville
 read -e -p "Entrez le nom de votre entreprise ou si vous ete un particulier entrez le nom de votre serveur : " -i $org org
 read -e -p "Entrez votre adresse mail : " email
@@ -54,14 +54,14 @@ echo "Enter the first letter of your country in uppercase"
 echo "eg : for France FR"
 read -e -p "Enter the first letter of your country in uppercase  : " -i $country country
 read -e -p "Enter the number of your department : " dep
-read -e -p "Enter the port number that will be used by the server (tcp 443 recommended) : " port
+read -e -p "Enter the port number that will be used by the server (443 recommended) : " port
 cat > /etc/openvpnport <<EOF
 $port
 EOF
+read -e -p "Enter the protocol tcp or udp (tcp recommended) : " proto
 cat > /etc/openvpnproto<<EOF
 $proto
 EOF
-read -e -p "Enter the protocol tcp or udp : " proto
 read -e -p "Enter the name of your city : " ville
 read -e -p "Enter your company name or if particular enter the name of the server : " -i $org org
 read -e -p "Enter your email address : " email
