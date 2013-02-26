@@ -52,7 +52,7 @@ country=EN
 org=$(hostname)
 echo "Enter the first letter of your country in uppercase"
 echo "eg : for France FR"
-read -e -p "Enter the first letter of your country in uppercase  : " -i $country country
+read -e -p "Enter the first letter of your country in uppercase  : " country
 read -e -p "Enter the number of your department : " dep
 read -e -p "Enter the port number that will be used by the server (443 recommended) : " port
 cat > /etc/openvpnport <<EOF
@@ -63,7 +63,7 @@ cat > /etc/openvpnproto<<EOF
 $proto
 EOF
 read -e -p "Enter the name of your city : " ville
-read -e -p "Enter your company name or if particular enter the name of the server : " -i $org org
+read -e -p "Enter your company name or if particular enter the name of the server : " org
 read -e -p "Enter your email address : " email
 fi
 
