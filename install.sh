@@ -324,6 +324,34 @@ iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT
 iptables -A FORWARD -i eth0 -o tun0 -j ACCEPT
 service iptables save
 service iptables restart
+cat > /etc/init.d/NAT<<EOF
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          openvpn-nat
+# Required-Start:    $network
+# Required-Stop:     $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: OpenVZ-NAT
+# Description:       Active le NAT et le firewall
+### END INIT INFO
+
+# Vider les tables actuelles
+iptables -t filter -F
+
+# Vider les règles personnelles
+iptables -t filter -X
+iptables -A INPUT -p $proto -m state --state NEW -m $proto --dport $port -j ACCEPT
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT
+iptables -A FORWARD -i eth0 -o tun0 -j ACCEPT
+EOF
+chmod 755 /etc/init.d/NAT
+chkconfig --add NAT
+chkconfig NAT on
+chkconfig --ad openvpn
+chkconfig openvpn on
 service openvpn restart
 mkdir /etc/openvpn/clientconf
 cp /tmp/openvpnscripts/ovcreateclient-centos.sh /bin/ovcreateclient
