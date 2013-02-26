@@ -351,7 +351,7 @@ EOF
 chmod 755 /etc/init.d/NAT
 chkconfig --add NAT
 chkconfig NAT on
-chkconfig --ad openvpn
+chkconfig --add openvpn
 chkconfig openvpn on
 service openvpn restart
 mkdir /etc/openvpn/clientconf
