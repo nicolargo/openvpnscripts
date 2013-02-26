@@ -339,6 +339,9 @@ verb 3
 EOF
 echo 0 > /selinux/enforce
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+ln -s /lib/systemd/system/openvpn\@.service /etc/systemd/system/multi-user.target.wants/openvpn\@server.service
+systemctl enable openvpn@server.service
+systemctl start openvpn@server.service
 service openvpn start
 echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -377,6 +380,8 @@ chkconfig NAT on
 chkconfig --add openvpn
 chkconfig openvpn on
 service openvpn restart
+systemctl restart openvpn@server.service
+systemctl enable NAT@server.service
 mkdir /etc/openvpn/clientconf
 cp /tmp/openvpnscripts/ovcreateclient-centos.sh /bin/ovcreateclient
 dos2unix /bin/ovcreateclient
