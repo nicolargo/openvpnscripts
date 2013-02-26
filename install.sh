@@ -189,11 +189,12 @@ else
 echo "Enter the version number of read-hat"
 echo "eg: centos 6 to enter 6 centos 5 to enter 5"
 read-e-p "Enter the version number of read-hat : " VERSION
-yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-1.el$VERSION.rf.$(uname -m).rpm
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 fi
 yum -y install gcc make iptables rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
