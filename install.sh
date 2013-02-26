@@ -180,9 +180,18 @@ rm -rf /tmp/openvpnscripts/
 else
 cd /root
 yum -y update
-yum -y install gcc make rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
+yum install -y redhat-lsb
+release=$(lsb_release -r)
+if [ "$release" = "Release: 5.9" ]
+then
+VERSION=5
+elif [ "$release" = "Release: 6.3" ]
+then
+VERSION=6
+fi
+yum -y install gcc make iptables rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
-yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-1.el6.rf.$(uname -m).rpm
+yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
