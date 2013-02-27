@@ -106,7 +106,7 @@ source vars
 ./build-dh
 ./pkitool --initca
 ./pkitool --server server
-sudo openvpn --genkey --secret keys/ta.key
+openvpn --genkey --secret keys/ta.key
 cp keys/ca.crt keys/ta.key keys/server.crt keys/server.key keys/dh1024.pem /etc/openvpn/
 mkdir /etc/openvpn/chroot
 mkdir /etc/openvpn/clientconf
@@ -196,20 +196,6 @@ wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
 if [ "$VERSION" = "17" -o "$VERSION" = "18" ]
 then
-rm -f /sbin/iptables
-wget http://www.netfilter.org/projects/iptables/files/iptables-1.4.17.tar.bz2
-tar -xf iptables-1.4.17.tar.bz2
-cd iptables-1.4.17
-LDFLAGS="-L$PWD/libiptc/.libs"                     \
-./configure --prefix=/sbin                          \
-            --exec-prefix=                         \
-            --bindir=/sbin                      \
-            --with-xtlibdir=/lib/xtables           \
-            --with-pkgconfigdir=/usr/lib/pkgconfig \
-            --enable-libipq                        \
-            --enable-devel
-make
-make install
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
@@ -369,9 +355,7 @@ iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT
 iptables -A FORWARD -i eth0 -o tun0 -j ACCEPT
 EOF
 chmod 755 /etc/init.d/NAT
-service openvpn restart
 systemctl restart openvpn@server.service
-systemctl enable NAT@server.service
 mkdir /etc/openvpn/clientconf
 cp /tmp/openvpnscripts/ovcreateclient-debian.sh /bin/ovcreateclient
 dos2unix /bin/ovcreateclient
@@ -503,10 +487,7 @@ verb 3
 EOF
 echo 0 > /selinux/enforce
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-ln -s /lib/systemd/system/openvpn\@.service /etc/systemd/system/multi-user.target.wants/openvpn\@server.service
-systemctl enable openvpn@server.service
-systemctl start openvpn@server.service
-service openvpn start
+ln -s /lib/systemd/system/openvpn\@server.service /etc/systemd/system/multi-user.target.wants/openvpn\@server.service
 echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -A INPUT -p $proto -m state --state NEW -m $proto --dport $port -j ACCEPT
@@ -544,8 +525,6 @@ chkconfig NAT on
 chkconfig --add openvpn
 chkconfig openvpn on
 service openvpn restart
-systemctl restart openvpn@server.service
-systemctl enable NAT@server.service
 mkdir /etc/openvpn/clientconf
 cp /tmp/openvpnscripts/ovcreateclient-centos.sh /bin/ovcreateclient
 dos2unix /bin/ovcreateclient
