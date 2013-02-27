@@ -76,6 +76,7 @@ apt-get -y install openvpn sudo zip unzip
 mkdir /etc/openvpn/
 mkdir /etc/openvpn/easy-rsa/
 cp -R /usr/share/doc/openvpn/examples/easy-rsa/2.0/* /etc/openvpn/easy-rsa/
+cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
 chown -R $USER /etc/openvpn/easy-rsa/
 
 rm /etc/openvpn/easy-rsa/vars
