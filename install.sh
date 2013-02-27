@@ -196,6 +196,20 @@ wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
 if [ "$VERSION" = "17" -o "$VERSION" = "18" ]
 then
+rm -f /sbin/iptables
+wget http://www.netfilter.org/projects/iptables/files/iptables-1.4.17.tar.bz2
+tar -xf iptables-1.4.17.tar.bz2
+cd iptables-1.4.17
+LDFLAGS="-L$PWD/libiptc/.libs"                     \
+./configure --prefix=/sbin                          \
+            --exec-prefix=                         \
+            --bindir=/sbin                      \
+            --with-xtlibdir=/lib/xtables           \
+            --with-pkgconfigdir=/usr/lib/pkgconfig \
+            --enable-libipq                        \
+            --enable-devel
+make
+make install
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
@@ -305,26 +319,18 @@ ca ca.crt
 cert server.crt
 key server.key
 dh dh1024.pem
-tls-auth ta.key 0
-cipher AES-256-CBC
 # Reseau
 server 10.8.0.0 255.255.255.0
-push "redirect-gateway def1 bypass-dhcp"
+push "redirect-gateway def1"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
-keepalive 10 120
-# Securite
-user nobody
-group nogroup
-chroot /etc/openvpn/chroot
+keepalive 5 30
+comp-lzo
 persist-key
 persist-tun
-comp-lzo
-# Log
+status $port.log
 verb 3
-mute 20
-status openvpn-status.log
-log-append $port.log
+status $port.log
 EOF
 echo 0 > /selinux/enforce
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
