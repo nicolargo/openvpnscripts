@@ -140,7 +140,7 @@ comp-lzo
 verb 3
 mute 20
 status openvpn-status.log
-log-append /var/log/openvpn.log
+log-append $port.log
 EOF
 service openvpn start
 echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
@@ -204,17 +204,16 @@ yum install openvpn -y
 cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/ /etc/openvpn/
 if [ "$VERSION" = "17" -o "$VERSION" = "18" ]
 then
-mkdir /etc/openvpn
 cd /etc/openvpn
 git clone git://github.com/OpenVPN/easy-rsa.git /etc/openvpn/test
 mkdir /etc/openvpn/easy-rsa
-cp -R /etc/openvpn/test/easy-rsa/* /etc/openvpn/easy-rsa
+cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa
 rm -rf /etc/openvpn/test
-cd /etc/openvpn/easy-rsa/2.0
+cd /etc/openvpn/easy-rsa/
 chmod 755 *
-rm -f /etc/openvpn/easy-rsa/2.0/vars
-touch /etc/openvpn/easy-rsa/2.0/vars
-cat > /etc/openvpn/easy-rsa/2.0/vars <<EOF
+rm -f /etc/openvpn/easy-rsa/vars
+touch /etc/openvpn/easy-rsa/vars
+cat > /etc/openvpn/easy-rsa/vars <<EOF
 # easy-rsa parameter settings
 
 # NOTE: If you installed from an RPM,
@@ -229,7 +228,7 @@ cat > /etc/openvpn/easy-rsa/2.0/vars <<EOF
 # This variable should point to
 # the top level of the easy-rsa
 # tree.
-export EASY_RSA="/etc/openvpn/easy-rsa/2.0/"
+export EASY_RSA="/etc/openvpn/easy-rsa/"
 
 #
 # This variable should point to
@@ -243,7 +242,7 @@ export GREP="grep"
 # This variable should point to
 # the openssl.cnf file included
 # with easy-rsa.
-export KEY_CONFIG=/etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf
+export KEY_CONFIG=/etc/openvpn/easy-rsa/openssl-1.0.0.cnf
 
 # Edit this variable to point to
 # your soon-to-be-created key
@@ -253,7 +252,7 @@ export KEY_CONFIG=/etc/openvpn/easy-rsa/2.0/openssl-1.0.0.cnf
 # a rm -rf on this directory
 # so make sure you define
 # it correctly!
-export KEY_DIR="/etc/openvpn/easy-rsa/2.0/keys"
+export KEY_DIR="/etc/openvpn/easy-rsa/keys"
 
 # Issue rm -rf warning
 echo NOTE: If you run ./clean-all, I will be doing a rm -rf on $KEY_DIR
@@ -292,6 +291,7 @@ export PKCS11_PIN=1234
 EOF
 
 mkdir keys
+mkdir /etc/openvpn/chroot
 chmod 755 *
 source ./vars
 ./vars
@@ -300,31 +300,35 @@ source ./vars
 ./build-key-server server
 ./build-dh
 cat > /etc/openvpn/server.conf <<EOF
-port $port #- port
-proto $proto #- protocol
+mode server
+proto $proto
+port $port
 dev tun
-tun-mtu 1500
-tun-mtu-extra 32
-mssfix 1450
-reneg-sec 0
-ca /etc/openvpn/easy-rsa/2.0/keys/ca.crt
-cert /etc/openvpn/easy-rsa/2.0/keys/server.crt
-key /etc/openvpn/easy-rsa/2.0/keys/server.key
-dh /etc/openvpn/easy-rsa/2.0/keys/dh1024.pem
-#plugin /usr/share/openvpn/plugin/lib/openvpn-auth-pam.so /etc/pam.d/login #- Comment this line if you are using FreeRADIUS
-#plugin /etc/openvpn/radiusplugin.so /etc/openvpn/radiusplugin.cnf #- Uncomment this line if you are using FreeRADIUS
-client-cert-not-required
-#username-as-common-name
+# Cles et certificats
+ca ca.crt
+cert server.crt
+key server.key
+dh dh1024.pem
+tls-auth ta.key 0
+cipher AES-256-CBC
+# Reseau
 server 10.8.0.0 255.255.255.0
-push "redirect-gateway def1"
+push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
-keepalive 5 30
-comp-lzo
+keepalive 10 120
+# Securite
+user nobody
+group nogroup
+chroot /etc/openvpn/chroot
 persist-key
 persist-tun
-status $port.log
+comp-lzo
+# Log
 verb 3
+mute 20
+status openvpn-status.log
+log-append $port.log
 EOF
 echo 0 > /selinux/enforce
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
