@@ -371,7 +371,6 @@ dos2unix /bin/ovcreateclient
 chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
 exit
-fi
 else
 cd /etc/openvpn/easy-rsa/2.0
 chmod 755 *
