@@ -1,6 +1,7 @@
 #!/bin/bash
 # centos 6 , ubuntu and debian
 # vérifier si la distribution et de type debian ou read hat
+exec &>/tmp/openvpn-install.log
 if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UTF-8" ]; then
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
