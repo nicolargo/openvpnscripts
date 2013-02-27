@@ -538,4 +538,6 @@ cp /tmp/openvpnscripts/ovcreateclient-centos.sh /bin/ovcreateclient
 dos2unix /bin/ovcreateclient
 chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
+exit
+fi
 fi
