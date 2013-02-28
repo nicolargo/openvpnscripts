@@ -375,7 +375,7 @@ rm -rf /tmp/openvpnscripts/
 exit
 else
 UNAME=$(uname -m)
-if [ "$UNAME" = "i686" ]
+if [ "$VERSION" = "5" ] && [ "$UNAME" = "i686" ]
 then
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
 rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
