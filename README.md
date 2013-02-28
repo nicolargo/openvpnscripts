@@ -40,9 +40,11 @@ CentOS 6 + SolusVM OpenVZ (Slave) et (and) client Windows 7 32 bit
 
 
 d'autre distribution seront tester et ajouté par la suite
+
 other distribution will be tested and later added
 
 si vous rencontrez des erreurs ou voulez faire part de vos test vous pouvez me contacter à
+
 If you encounter any errors or want to share your test you can contact me at
 
 andykimpe[AT]gmail[DOT]com
