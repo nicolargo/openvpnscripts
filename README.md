@@ -12,7 +12,7 @@ CentOS 5.9 32 bit et (and) client ubuntu 12.04 64 bit ok
 
 CentOS 6.3 64 bit et (and) client ubuntu 12.04 64 bit ok
 
-CentOS 6.3 32 bit (en test in test) et (and) client ubuntu 12.04 64 bit
+CentOS 6.3 32 bit et (and) client ubuntu 12.04 64 bit ok
 
 Debian 6.0 (Squeeze) 64 bit et (and) client ubuntu 12.04 64 bit ok
 
