@@ -316,13 +316,13 @@ persist-key
 persist-tun
 status $port.log
 verb 3
-status $port.log
 EOF
-echo 0 > /selinux/enforce
+setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-ln -s /lib/systemd/system/openvpn\@.service /etc/systemd/system/multi-user.target.wants/openvpn\@server.service
-systemctl enable openvpn@server.service
-systemctl start openvpn@server.service
+mv /lib/systemd/system/openvpn\@server.service /lib/systemd/system/openvpn.service
+cp /lib/systemd/system/openvpn.service /etc/systemd/system/multi-user.target.wants/openvpn.service
+systemctl enable openvpn.service
+systemctl start openvpn.service
 echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
 cat > /etc/sysconfig/iptables<<EOF
@@ -366,9 +366,9 @@ COMMIT
 EOF
 service iptables restart
 iptables-restore </etc/sysconfig/iptables
-systemctl restart openvpn@server.service
+systemctl restart openvpn.service
 mkdir /etc/openvpn/clientconf
-cp /tmp/openvpnscripts/ovcreateclient-debian.sh /bin/ovcreateclient
+cp /tmp/openvpnscripts/ovcreateclient-fedora.sh /bin/ovcreateclient
 dos2unix /bin/ovcreateclient
 chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
