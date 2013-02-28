@@ -319,10 +319,9 @@ verb 3
 EOF
 setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-mv /lib/systemd/system/openvpn\@server.service /lib/systemd/system/openvpn.service
-cp /lib/systemd/system/openvpn.service /etc/systemd/system/multi-user.target.wants/openvpn.service
-systemctl enable openvpn.service
-systemctl start openvpn.service
+ln -s '/usr/lib/systemd/system/openvpn@.service' '/etc/systemd/system/multi-user.target.wants/openvpn@server.service'
+systemctl enable openvpn@server.service
+systemctl start openvpn@server.service
 echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
 echo 1 > /proc/sys/net/ipv4/ip_forward
 cat > /etc/sysconfig/iptables<<EOF
@@ -366,7 +365,7 @@ COMMIT
 EOF
 service iptables restart
 iptables-restore </etc/sysconfig/iptables
-systemctl restart openvpn.service
+systemctl restart openvpn@server.service
 mkdir /etc/openvpn/clientconf
 cp /tmp/openvpnscripts/ovcreateclient-fedora.sh /bin/ovcreateclient
 dos2unix /bin/ovcreateclient
