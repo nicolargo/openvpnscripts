@@ -47,7 +47,7 @@ echo "Creation du certificat pour le client $1"
 
 
 sudo mkdir /etc/openvpn/clientconf/$1
-sudo cp /etc/openvpn/ca.crt /etc/openvpn/ta.key keys/$1.crt keys/$1.key /etc/openvpn/clientconf/$1/
+sudo cp /etc/openvpn/ca.crt keys/$1.crt keys/$1.key /etc/openvpn/clientconf/$1/
 sudo chmod -R 777 /etc/openvpn/clientconf/$1
 cd /etc/openvpn/clientconf/$1
 cat >> /etc/openvpn/clientconf/$1/client.conf << EOF
