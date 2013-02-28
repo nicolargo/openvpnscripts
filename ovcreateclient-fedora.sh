@@ -64,6 +64,8 @@ mssfix 1450
 persist-key
 persist-tun
 ca ca.crt
+cert $1.crt
+key $1.key
 comp-lzo
 reneg-sec 0
 verb 3
