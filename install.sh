@@ -374,8 +374,15 @@ chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
 exit
 else
+UNAME=$(uname -m)
+if [ "$UNAME" = "i686" -o "$UNAME" = "i386" ]
+then
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
+else
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
+fi
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
