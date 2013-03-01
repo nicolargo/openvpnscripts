@@ -16,8 +16,6 @@ echo -e "\033[34m###########################""\033[00m""\033[37m################
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 
 
-country=FR
-org=$(hostname)
 echo "Entrez les premierre lettre de votre pays en majuscule"
 echo "ex : pour la france FR"
 read -e -p "Entrez les premierre lettre de votre pays en majuscule  : " country
@@ -48,8 +46,6 @@ echo "##########################################################################
 
 
 
-country=EN
-org=$(hostname)
 echo "Enter the first letter of your country in uppercase"
 echo "eg : for France FR"
 read -e -p "Enter the first letter of your country in uppercase  : " country
