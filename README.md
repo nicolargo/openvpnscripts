@@ -20,7 +20,7 @@ Debian 6.0 (Squeeze) 32 bit et (and) client ubuntu 12.04 64 bit ok
 
 Debian 7.0 (Wheezy) (ALPHA) 64 bit et (and) client ubuntu 12.04 64 bit ok
 
-Debian 7.0 (Wheezy) (ALPHA) 32 bit (en test in test) et (and) client ubuntu 12.04 64 bit
+Debian 7.0 (Wheezy) (ALPHA) 32 bit et (and) client ubuntu 12.04 64 bit ok
 
 Ubuntu Server 12.04 "Precise Pangolin" LTS 64 bit et (and) client ubuntu 12.04 64 bit ok
 
