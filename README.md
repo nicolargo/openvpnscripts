@@ -38,6 +38,8 @@ CentOS 6 + SolusVM OpenVZ (Slave) et (and) client ubuntu 12.04 64 bit ok
 
 CentOS 6 + SolusVM OpenVZ (Slave) et (and) client Windows 7 32 bit ok
 
+Fedora Core 17 "Beefy Miracle" et (and) client ubuntu 12.04 64 bit ok
+
 
 d'autre distribution seront tester et ajouté par la suite
 
