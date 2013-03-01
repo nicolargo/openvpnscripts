@@ -24,7 +24,7 @@ Debian 7.0 (Wheezy) (ALPHA) 32 bit et (and) client ubuntu 12.04 64 bit ok
 
 Ubuntu Server 12.04 "Precise Pangolin" LTS 64 bit et (and) client ubuntu 12.04 64 bit ok
 
-Ubuntu Server 12.04 "Precise Pangolin" LTS 32 bit (en test in test) et (and) client ubuntu 12.04 64 bit
+Ubuntu Server 12.04 "Precise Pangolin" LTS 32 bit et (and) client ubuntu 12.04 64 bit ok
 
 VPS Proxmox VE 2.2 et (and) client ubuntu 12.04 64 bit ok
 
