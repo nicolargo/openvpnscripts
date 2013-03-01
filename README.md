@@ -57,21 +57,25 @@ install packet git and dos2unix
 
 installer les packet git et dos2unix
 
+debian ubuntu
+
 apt-get -y install git dos2unix 
 
-or (ou) 
+or (ou)
+
+fedora centos 6 read-hat 6
 
 yum -y install git dos2unix 
 
 ou (or) pour (for) 
 
-centos 5 64bit 
+centos 5 64bit red-aht 5 64 bit
 
 yum -y install dos2unix zlib-devel openssl-devel cpio expat-devel gettext-devel gcc make automake && wget http://git-core.googlecode.com/files/git-1.7.9.tar.gz && tar xvzf git-1.7.9.tar.gz && cd git-1.7.9 && ./configure && make && make install 
 
 ou (or) pour (for) 
 
-centos 5 32 bit 
+centos 5 32 bit red-aht 5 bit
 
 wget http://mirror.centos.org/centos/5/updates/i386/RPMS/kernel-headers-2.6.18-348.1.1.el5.i386.rpm && rpm -i kernel-headers-2.6.18-348.1.1.el5.i386.rpm && yum -y update && yum -y install dos2unix zlib-devel openssl-devel cpio expat-devel gettext-devel gcc make automake && wget http://git-core.googlecode.com/files/git-1.7.9.tar.gz && tar xvzf git-1.7.9.tar.gz && cd git-1.7.9 && ./configure && make && make install
 
