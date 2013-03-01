@@ -354,7 +354,7 @@ COMMIT
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport $port -j ACCEPT
 COMMIT
 # Completed on Wed Feb 27 18:59:14 2013
 EOF
