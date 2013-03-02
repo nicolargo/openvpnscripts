@@ -59,7 +59,7 @@ install packet git and dos2unix
 
 installer les packet git et dos2unix
 
-debian ubuntu
+debian ubuntu attention ce script n'est pas compatible sur ubuntu 12.10 (attention to this script is not compatible ubuntu 12.10)
 
 apt-get -y install git dos2unix 
 
