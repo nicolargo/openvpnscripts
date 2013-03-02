@@ -199,7 +199,7 @@ mute 20
 status openvpn-status.log
 log-append $port.log
 EOF
-service openvpn start
+/etc/init.d/openvpn start
 echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
 iptables -A INPUT -p $proto -m state --state NEW -m $proto --dport $port -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
