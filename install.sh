@@ -70,7 +70,7 @@ apt-get update
 apt-get -y dist-upgrade
 apt-get -y install openvpn sudo zip unzip
 cd /etc/openvpn
-git clone git://github.com/OpenVPN/easy-rsa.git /etc/openvpn/test
+git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
 mkdir /etc/openvpn/easy-rsa
 cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa
 rm -rf /etc/openvpn/test
@@ -258,7 +258,7 @@ rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
 cd /etc/openvpn
-git clone git://github.com/OpenVPN/easy-rsa.git /etc/openvpn/test
+git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
 mkdir /etc/openvpn/easy-rsa
 cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa
 rm -rf /etc/openvpn/test
