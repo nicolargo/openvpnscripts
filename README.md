@@ -1,3 +1,14 @@
+Version 0.4
+
+Correction d'un bug sur l'installation centos
+
+Fixed a bug on centos install
+
+Authentification automatique sans fournir le nom d'utilisateur et le mot de passe pour centos
+
+
+Automatic authentication without providing the username and password for centos
+
 ce script a était conçu pour vous permettre d'installer et de configurer automatique et facilement openvpn sur votre serveur
 
 il a était tester cher ovh il et compatible avec les distribution suivante
@@ -99,3 +110,59 @@ ovcreateclient myclient
 vous pouvez ensuite récupérer l'archive zip dans le dossier /etc/openvpn/clientconf/nomduclient
 
 you can then retrieve the zip file in the /etc/openvpn/clientconf/nameofclient
+
+si vous avez toujour un problème avec l'installation centos
+
+
+Still if you have a problem with installing centos
+
+editer le fichier (Edit file) /etc/openvpn/server.conf
+
+
+remplacer (replace)
+
+plugin /usr/share/openvpn/plugin/lib/openvpn-auth-pam.so /etc/pam.d/login
+
+par (by)
+
+plugin /etc/openvpn/openvpn-auth-pam.so /etc/pam.d/login
+
+exécuter les commandes (execut command)
+
+32 bit
+
+wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
+
+unzip openvpn-auth-pam.zip
+
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+
+killall -9 openvpn
+
+service openvpn restart
+
+64 bit
+
+wget http://safesrv.net/public/openvpn-auth-pam.zip
+
+unzip openvpn-auth-pam.zip
+
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+
+killall -9 openvpn
+
+service openvpn restart
+
+le script ovpncreateclient a etait mis a jour pour centos pour mettre a jour
+
+ovpncreateclient the script was updated to centos to update
+
+sudo rm -f /bin/ovpncreateclient
+
+sudo wget https://raw.github.com/andykimpe/openvpnscripts/master/ovcreateclient-centos.sh -o /bin
+
+sudo mv /bin/ovcreateclient-centos.sh /bin/ovcreateclient
+
+sudo dos2unix /bin/ovcreateclient
+
+sudo chmod +x /bin/ovcreateclient
