@@ -441,16 +441,6 @@ else
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 fi
-if [ "$VERSION" = "6" ] && [ "$UNAME" = "i386" ]
-then
-wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
-unzip openvpn-auth-pam.zip
-mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
-else
-wget http://safesrv.net/public/openvpn-auth-pam.zip
-unzip openvpn-auth-pam.zip
-mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
-fi
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
@@ -535,6 +525,17 @@ export KEY_OU=changeme
 export PKCS11_MODULE_PATH=changeme
 export PKCS11_PIN=1234
 EOF
+
+if [ "$VERSION" = "6" ] && [ "$UNAME" = "i386" ]
+then
+wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+else
+wget http://safesrv.net/public/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+fi
 
 mkdir keys
 chmod 755 *
