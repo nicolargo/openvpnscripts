@@ -159,9 +159,7 @@ ovpncreateclient the script was updated to centos to update
 
 sudo rm -f /bin/ovpncreateclient
 
-sudo wget https://raw.github.com/andykimpe/openvpnscripts/master/ovcreateclient-centos.sh -o /bin
-
-sudo mv /bin/ovcreateclient-centos.sh /bin/ovcreateclient
+sudo wget https://raw.github.com/andykimpe/openvpnscripts/master/ovcreateclient-centos.sh -o /bin/ovcreateclient
 
 sudo dos2unix /bin/ovcreateclient
 
