@@ -12,7 +12,7 @@
 #
 # Syntaxe: # sudo ./ovcreateclient.sh <nomduclient>
 #
-VERSION="0.3"
+VERSION="0.4"
 port=$(cat /etc/openvpnport)
 proto=$(cat /etc/openvpnproto)
 # verifier si sudo et installer
@@ -45,7 +45,8 @@ cd /etc/openvpn/easy-rsa
 
 echo "Creation du client OpenVPN: $1"
 sudo useradd $1 -s /bin/false
-sudo passwd $1
+read -e -p "mot de passe pour votre compte " pass
+echo "$1:$pass" | sudo chpasswd
 sudo mkdir /etc/openvpn/clientconf/$1
 sudo cp /etc/openvpn/easy-rsa/2.0/keys/ca.crt /etc/openvpn/clientconf/$1/
 sudo chmod -R 777 /etc/openvpn/clientconf/$1
@@ -63,12 +64,16 @@ mssfix 1450
 persist-key
 persist-tun
 ca ca.crt
-auth-user-pass
+auth-user-pass $1.txt
 comp-lzo
 reneg-sec 0
 verb 3
 script-security 3 system
 up /etc/openvpn/update-resolv-conf
+EOF
+sudo cat >>  /etc/openvpn/clientconf/$1/$1.txt << EOF
+$1
+$pass
 EOF
 # ajout de la compatibilité pour windows xp (la même config sauf que je change le pour pouvoir les diférencier)
 sudo cp client.conf client-xp.ovpn
@@ -103,7 +108,8 @@ cd /etc/openvpn/easy-rsa
 
 echo "Creation of OpenVPN client : $1"
 sudo useradd $1 -s /bin/false
-sudo passwd $1
+read -e -p "Enter password for your account" pass
+echo "$1:$pass" | sudo chpasswd
 sudo mkdir /etc/openvpn/clientconf/$1
 sudo cp /etc/openvpn/easy-rsa/2.0/keys/ca.crt /etc/openvpn/clientconf/$1/
 sudo chmod -R 777 /etc/openvpn/clientconf/$1
@@ -121,12 +127,16 @@ mssfix 1450
 persist-key
 persist-tun
 ca ca.crt
-auth-user-pass
+auth-user-pass $1
 comp-lzo
 reneg-sec 0
 verb 3
 script-security 3 system
 up /etc/openvpn/update-resolv-conf
+EOF
+sudo cat >>  /etc/openvpn/clientconf/$1/$1.txt << EOF
+$1
+$pass
 EOF
 # ajout de la compatibilité pour windows xp (la même config sauf que je change le pour pouvoir les diférencier)
 sudo cp client.conf client-xp.ovpn
