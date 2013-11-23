@@ -16,8 +16,6 @@ echo -e "\033[34m###########################""\033[00m""\033[37m################
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 
 
-country=FR
-org=$(hostname)
 echo "Entrez les premierre lettre de votre pays en majuscule"
 echo "ex : pour la france FR"
 read -e -p "Entrez les premierre lettre de votre pays en majuscule  : " country
@@ -48,8 +46,6 @@ echo "##########################################################################
 
 
 
-country=EN
-org=$(hostname)
 echo "Enter the first letter of your country in uppercase"
 echo "eg : for France FR"
 read -e -p "Enter the first letter of your country in uppercase  : " country
@@ -73,39 +69,101 @@ then
 apt-get update
 apt-get -y dist-upgrade
 apt-get -y install openvpn sudo zip unzip
-mkdir /etc/openvpn/
-mkdir /etc/openvpn/easy-rsa/
-cp -R /usr/share/doc/openvpn/examples/easy-rsa/2.0/* /etc/openvpn/easy-rsa/
-cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
+cd /etc/openvpn
+git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
+mkdir /etc/openvpn/easy-rsa
+cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa
+rm -rf /etc/openvpn/test
 chown -R $USER /etc/openvpn/easy-rsa/
-
-rm /etc/openvpn/easy-rsa/vars
+cd /etc/openvpn/easy-rsa/
+chmod 755 *
+rm -f /etc/openvpn/easy-rsa/vars
+touch /etc/openvpn/easy-rsa/vars
 cat > /etc/openvpn/easy-rsa/vars <<EOF
+# easy-rsa parameter settings
+
+# NOTE: If you installed from an RPM,
+# don't edit this file in place in
+# /usr/share/openvpn/easy-rsa --
+# instead, you should copy the whole
+# easy-rsa directory to another location
+# (such as /etc/openvpn) so that your
+# edits will not be wiped out by a future
+# OpenVPN package upgrade.
+
+# This variable should point to
+# the top level of the easy-rsa
+# tree.
 export EASY_RSA="/etc/openvpn/easy-rsa/"
+
+#
+# This variable should point to
+# the requested executables
+#
 export OPENSSL="openssl"
 export PKCS11TOOL="pkcs11-tool"
 export GREP="grep"
-export KEY_CONFIG=/etc/openvpn/easy-rsa/openssl.cnf
+
+
+# This variable should point to
+# the openssl.cnf file included
+# with easy-rsa.
+export KEY_CONFIG=/etc/openvpn/easy-rsa/openssl-1.0.0.cnf
+
+# Edit this variable to point to
+# your soon-to-be-created key
+# directory.
+#
+# WARNING: clean-all will do
+# a rm -rf on this directory
+# so make sure you define
+# it correctly!
 export KEY_DIR="/etc/openvpn/easy-rsa/keys"
+
+# Issue rm -rf warning
 echo NOTE: If you run ./clean-all, I will be doing a rm -rf on $KEY_DIR
+
+# PKCS11 fixes
 export PKCS11_MODULE_PATH="dummy"
 export PKCS11_PIN="dummy"
+
+# Increase this to 2048 if you
+# are paranoid.  This will slow
+# down TLS negotiation performance
+# as well as the one-time DH parms
+# generation process.
 export KEY_SIZE=1024
+
+# In how many days should the root CA key expire?
 export CA_EXPIRE=3650
+
+# In how many days should certificates expire?
 export KEY_EXPIRE=3650
+
+# These are the default values for fields
+# which will be placed in the certificate.
+# Don't leave any of these fields blank.
 export KEY_COUNTRY="$country"
 export KEY_PROVINCE="$dep"
 export KEY_CITY="$ville"
 export KEY_ORG="$org"
 export KEY_EMAIL="$email"
+export KEY_EMAIL=$email
+export KEY_CN=changeme
+export KEY_NAME=changeme
+export KEY_OU=changeme
+export PKCS11_MODULE_PATH=changeme
+export PKCS11_PIN=1234
 EOF
-cd /etc/openvpn/easy-rsa/
-source vars
+
+mkdir keys
+chmod 755 *
+source ./vars
 ./vars
 ./clean-all
+./build-ca
+./build-key-server server
 ./build-dh
-./pkitool --initca
-./pkitool --server server
 openvpn --genkey --secret keys/ta.key
 cp keys/ca.crt keys/ta.key keys/server.crt keys/server.key keys/dh1024.pem /etc/openvpn/
 mkdir /etc/openvpn/chroot
@@ -141,7 +199,7 @@ mute 20
 status openvpn-status.log
 log-append $port.log
 EOF
-service openvpn start
+/etc/init.d/openvpn start
 echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
 iptables -A INPUT -p $proto -m state --state NEW -m $proto --dport $port -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -189,7 +247,7 @@ read -e -p "Entrez votre numéro de version de read-hat : " VERSION
 else
 echo "Enter the version number of read-hat"
 echo "eg: centos 6 to enter 6 centos 5 to enter 5 fedora 17 to 17 fedora 18 to 18"
-read-e-p "Enter the version number of read-hat : " VERSION
+read -e -p "Enter the version number of read-hat : " VERSION
 fi
 yum -y install gcc make iptables rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
@@ -199,11 +257,10 @@ then
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
-cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/ /etc/openvpn/
 cd /etc/openvpn
-git clone git://github.com/OpenVPN/easy-rsa.git /etc/openvpn/test
+git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
 mkdir /etc/openvpn/easy-rsa
-cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa
+cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/* /etc/openvpn/easy-rsa
 rm -rf /etc/openvpn/test
 cd /etc/openvpn/easy-rsa/
 chmod 755 *
@@ -316,15 +373,14 @@ persist-key
 persist-tun
 status $port.log
 verb 3
-status $port.log
 EOF
-echo 0 > /selinux/enforce
+setenforce 0
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
-ln -s /lib/systemd/system/openvpn\@.service /etc/systemd/system/multi-user.target.wants/openvpn\@server.service
+ln -s '/usr/lib/systemd/system/openvpn@.service' '/etc/systemd/system/multi-user.target.wants/openvpn@server.service'
 systemctl enable openvpn@server.service
 systemctl start openvpn@server.service
-echo net.ipv4.ip_forward = 1 >> /etc/sysctl.conf
-echo 1 > /proc/sys/net/ipv4/ip_forward
+sed -i 's/net.ipv4.ip_forward = 0/net.ipv4.ip_forward = 1/g' /etc/sysctl.conf
+sysctl -w net.ipv4.ip_forward=1
 cat > /etc/sysconfig/iptables<<EOF
 # Generated by iptables-save v1.4.14 on Wed Feb 27 18:59:14 2013
 *raw
@@ -359,8 +415,7 @@ COMMIT
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
--A INPUT -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
--A FORWARD -j REJECT --reject-with icmp-host-prohibited
+-A INPUT -p tcp -m state --state NEW -m tcp --dport $port -j ACCEPT
 COMMIT
 # Completed on Wed Feb 27 18:59:14 2013
 EOF
@@ -368,14 +423,24 @@ service iptables restart
 iptables-restore </etc/sysconfig/iptables
 systemctl restart openvpn@server.service
 mkdir /etc/openvpn/clientconf
-cp /tmp/openvpnscripts/ovcreateclient-debian.sh /bin/ovcreateclient
+cp /tmp/openvpnscripts/ovcreateclient-fedora.sh /bin/ovcreateclient
 dos2unix /bin/ovcreateclient
 chmod +x /bin/ovcreateclient
 rm -rf /tmp/openvpnscripts/
 exit
 else
+UNAME=$(uname -m)
+if [ "$VERSION" = "5" ] && [ "$UNAME" = "i686" ]
+then
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
+wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+else
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
 rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
+fi
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
@@ -461,6 +526,17 @@ export PKCS11_MODULE_PATH=changeme
 export PKCS11_PIN=1234
 EOF
 
+if [ "$VERSION" = "6" ] && [ "$UNAME" = "i386" ]
+then
+wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+else
+wget http://safesrv.net/public/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+fi
+
 mkdir keys
 chmod 755 *
 source ./vars
@@ -481,7 +557,7 @@ ca /etc/openvpn/easy-rsa/2.0/keys/ca.crt
 cert /etc/openvpn/easy-rsa/2.0/keys/server.crt
 key /etc/openvpn/easy-rsa/2.0/keys/server.key
 dh /etc/openvpn/easy-rsa/2.0/keys/dh1024.pem
-plugin /usr/share/openvpn/plugin/lib/openvpn-auth-pam.so /etc/pam.d/login #- Comment this line if you are using FreeRADIUS
+plugin /etc/openvpn/openvpn-auth-pam.so /etc/pam.d/login #- Comment this line if you are using FreeRADIUS
 #plugin /etc/openvpn/radiusplugin.so /etc/openvpn/radiusplugin.cnf #- Uncomment this line if you are using FreeRADIUS
 client-cert-not-required
 username-as-common-name
