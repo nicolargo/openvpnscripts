@@ -595,10 +595,8 @@ cat > /etc/init.d/NAT<<EOF
 ### END INIT INFO
 
 # Vider les tables actuelles
-iptables -t filter -F
 
 # Vider les règles personnelles
-iptables -t filter -X
 iptables -A INPUT -p $proto -m state --state NEW -m $proto --dport $port -j ACCEPT
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 iptables -A FORWARD -i tun0 -o eth0 -j ACCEPT
