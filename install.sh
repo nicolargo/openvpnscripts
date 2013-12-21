@@ -1,5 +1,6 @@
 #!/bin/bash
 # centos 6 , ubuntu and debian
+version="0.5"
 #create log file
 logfile=/var/log/openvpn-auto-install.log
 exec > >(tee $logfile)
@@ -38,9 +39,9 @@ mkdir /etc/openvpnlang
 cp openvpnscripts/fr.sh /etc/openvpnlang
 cp openvpnscripts/en.sh /etc/openvpnlang
 
-echo -e "----------------------"
-echo -e "openvpn auto Install"
-echo -e "---------------------"
+echo -e "-------------------------------"
+echo -e "openvpn auto Install v $version"
+echo -e "-------------------------------"
 echo "To continue in English, type e"
 echo "Pour continuer en Français, tapez f"
 echo "To Exit / Pour quitter : CTRL-C"
