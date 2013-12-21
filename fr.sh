@@ -1,5 +1,6 @@
 #!/bin/bash
-country="Entrez les premierre lettre de votre pays en majuscule"
+country1="Entrez les premierre lettre de votre pays en majuscule"
 country2="ex : pour la france FR"
 country3="Entrez les premierre lettre de votre pays en majuscule  : "
-dep="Entrez le numero de votre departemant :  "
+dep1="Entrez le numero de votre departemant :  "
+port1="Entrez le numéro de port qui sera utilise par le serveur (recommander 443) : "
