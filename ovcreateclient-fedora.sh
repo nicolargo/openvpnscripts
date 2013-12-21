@@ -12,9 +12,23 @@
 #
 # Syntaxe: # sudo ./ovcreateclient.sh <nomduclient>
 #
-VERSION="0.3"
+VERSION="0.5"
 port=$(cat /etc/openvpnport)
 proto=$(cat /etc/openvpnproto)
+echo -e "------------------------------------"
+echo -e "openvpn auto createclient v $VERSION"
+echo -e "------------------------------------"
+echo "To continue in English, type e"
+echo "Pour continuer en Français, tapez f"
+echo "To Exit / Pour quitter : CTRL-C"
+while true; do
+read -e -p "? " lang
+   case $lang in
+     [e]* ) LANGUAGE=en.sh && break;;
+     [f]* ) LANGUAGE=fr.sh && break;;
+   esac
+done
+source /etc/openvpnlang/$LANGUAGE
 # verifier si sudo et installer
 if [ ! -e "/usr/bin/sudo" ]; then
 # si sudo n'est pas installer ont l'install
@@ -27,21 +41,21 @@ apt-get -y install zip
 fi
 # Test que le script est lance en root
 if [ $EUID -ne 0 ]; then
-  echo "Le script doit �tre lanc� en root: # sudo $0 <nomduclient>" 1>&2
+  echo "$root # sudo $0 <$nameclient>" 1>&2
   exit 1
 fi
 
 # Test parametre
 if [ $# -ne 1 ]; then
-  echo "Il faut saisir le nom du client: # sudo $0 <nomduclient>" 1>&2
+  echo "$mustclient # sudo $0 <$nameclient>" 1>&2
   exit 1
 fi
 
 cd /etc/openvpn/easy-rsa
 
-echo "Creation du client OpenVPN: $1"
+echo "$createclient $1"
 
-echo "Creation du certificat pour le client $1"
+echo "$createclient4 $1"
 		source vars
 		./build-key $1
 
@@ -86,6 +100,6 @@ sudo sed -i 's/script-security 3 system/route-method exe/g' /etc/openvpn/clientc
 sudo sed -i 's|up /etc/openvpn/update-resolv-conf|route-delay 2|' /etc/openvpn/clientconf/$1/client-vista-7.ovpn
 sudo zip $1.zip *.*
 
-echo "Creation du client OpenVPN $1 termine"
+echo "$createclient $1 $finish"
 echo "/etc/openvpn/clientconf/$1/$1.zip" 
 echo "---"
