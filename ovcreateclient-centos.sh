@@ -15,9 +15,9 @@
 VERSION="0.5"
 port=$(cat /etc/openvpnport)
 proto=$(cat /etc/openvpnproto)
-echo -e "------------------------------------"
-echo -e "openvpn auto createclient v $VERSION"
-echo -e "------------------------------------"
+echo -e "---------------------------------"
+echo -e " openvpn auto createclient v $VERSION"
+echo -e "---------------------------------"
 echo "To continue in English, type e"
 echo "Pour continuer en Français, tapez f"
 echo "To Exit / Pour quitter : CTRL-C"
