@@ -34,71 +34,42 @@ echo "your system $OS $VERSION $BITS is not compatible with this script"
 exit
 fi
 fi
+mkdir /etc/openvpnlang
+cp openvpnscripts/fr.sh /etc/openvpnlang
+cp openvpnscripts/en.sh /etc/openvpnlang
+
+echo -e "----------------------"
+echo -e "openvpn auto Install"
+echo -e "---------------------"
+echo "To continue in English, type e"
+echo "Pour continuer en Français, tapez f"
+echo "To Exit / Pour quitter : CTRL-C"
+while true; do
+read -e -p "? " lang
+   case $lang in
+     [e]* ) LANGUAGE=en.sh && break;;
+     [f]* ) LANGUAGE=fr.sh && break;;
+   esac
+done
+source /etc/openvpnlang/$LANGUAGE
 
 
-
-
-if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UTF-8" ]; then
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m######################openv""\033[00m""\033[37mpn Instalation "automatique"\033[00m""\033[31m en francais###############""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-
-
-echo "Entrez les premierre lettre de votre pays en majuscule"
-echo "ex : pour la france FR"
-read -e -p "Entrez les premierre lettre de votre pays en majuscule  : " country
-read -e -p "Entrez le numero de votre departemant : " dep
-read -e -p "Entrez le numéro de port qui sera utilise par le serveur (recommander 443) : " port
+echo -e $country1
+echo -e $country2
+read -e -p "$country3" country
+read -e -p "$dep1" dep
+read -e -p "$port1" port
 cat > /etc/openvpnport <<EOF
 $port
 EOF
-read -e -p "Entrez le protocol udp ou tcp (recommander tcp) : " proto
+read -e -p "$proto1" proto
 cat > /etc/openvpnproto<<EOF
 $proto
 EOF
-read -e -p " Entrez le nom de votre ville : " ville
-read -e -p "Entrez le nom de votre entreprise ou si vous ete un particulier entrez le nom de votre serveur : " org
-read -e -p "Entrez votre adresse mail : " email
-else
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "##########################Openvpn Auto Install English##########################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
+read -e -p "$city" ville
+read -e -p "$org1" org
+read -e -p "$mail" email
 
-
-
-echo "Enter the first letter of your country in uppercase"
-echo "eg : for France FR"
-read -e -p "Enter the first letter of your country in uppercase  : " country
-read -e -p "Enter the number of your department : " dep
-read -e -p "Enter the port number that will be used by the server (443 recommended) : " port
-cat > /etc/openvpnport <<EOF
-$port
-EOF
-read -e -p "Enter the protocol tcp or udp (tcp recommended) : " proto
-cat > /etc/openvpnproto<<EOF
-$proto
-EOF
-read -e -p "Enter the name of your city : " ville
-read -e -p "Enter your company name or if particular enter the name of the server : " org
-read -e -p "Enter your email address : " email
-fi
 
 if [ -f /etc/debian_version ]
 then
