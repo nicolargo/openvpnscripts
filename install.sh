@@ -1,6 +1,43 @@
 #!/bin/bash
 # centos 6 , ubuntu and debian
-# vérifier si la distribution et de type debian ou read hat
+#create log file
+logfile=/var/log/openvpn-auto-install.log
+exec > >(tee $logfile)
+exec 2>&1
+# check system compatibility
+echo "detect system"
+BITS=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
+if [ -f /etc/lsb-release ]; then
+  OS=$(cat /etc/lsb-release | grep DISTRIB_ID | sed 's/^.*=//')
+  VERSION=$(cat /etc/lsb-release | grep DISTRIB_RELEASE | sed 's/^.*=//')
+if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian" ] && [ "$VERSION" = "12.04" ] || [ "$VERSION" = "12.10" ] || [ "$VERSION" = "13.04" ] || [ "$VERSION" = "13.10" ] || [ "$VERSION" = "6" ] || [ "$VERSION" = "7" ] ;then
+echo "$OS $VERSION $BITS ok"
+elif [ -f /etc/centos-release ]; then
+OS=CentOS
+VERSION=$(cat /etc/centos-release | sed 's/^.*release //;s/ (Fin.*$//')
+if [ "$VERSION" = "5.9" ] || [ "$VERSION" = "6" ] || [ "$VERSION" = "6.1" ] || [ "$VERSION" = "6.2" ] || [ "$VERSION" = "6.3" ] || [ "$VERSION" = "6.4" ] || [ "$VERSION" = "6.5" ] ; then
+echo "$OS $VERSION $BITS ok"
+elif [ -f /etc/redhat-release ]; then
+VERSION=$(cat /etc/redhat-release | sed 's/^.*release //;s/ (Fin.*$//')
+if [ "$VERSION" = "17" ] || [ "$VERSION" = "18" ] || [ "$VERSION" = "19" ] ; then
+OS=Fedora
+echo "$OS $VERSION $BITS ok"
+else
+echo "your system $OS $VERSION $BITS is not compatible with this script"
+exit
+fi
+fi
+else
+OS=$(uname -s)
+VERSION=$(uname -r)
+echo "your system $OS $VERSION $BITS is not compatible with this script"
+exit
+fi
+fi
+
+
+
+
 if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UTF-8" ]; then
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
 echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
@@ -238,27 +275,17 @@ rm -rf /tmp/openvpnscripts/
 else
 cd /root
 yum -y update
-if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UTF-8" ]; then
-echo "Entrez votre numéro de version de read-hat"
-echo "ex: pour centos 6 entrez 6 pour centos 5 entrez 5 pour fedora 17 entrez 17 pour fedora 18 entrez 18"
-read -e -p "Entrez votre numéro de version de read-hat : " VERSION
-else
-echo "Enter the version number of read-hat"
-echo "eg: centos 6 to enter 6 centos 5 to enter 5 fedora 17 to 17 fedora 18 to 18"
-read -e -p "Enter the version number of read-hat : " VERSION
-fi
 yum -y install gcc make iptables rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
-if [ "$VERSION" = "17" -o "$VERSION" = "18" ]
-then
+if [ "$OS" = "Fedora" ] ;then
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
 cd /etc/openvpn
 git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
 mkdir /etc/openvpn/easy-rsa
-cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/* /etc/openvpn/easy-rsa
+cp -R /usr/share/doc/openvpn-2.3.2/easy-rsa/* /etc/openvpn/easy-rsa
 rm -rf /etc/openvpn/test
 cd /etc/openvpn/easy-rsa/
 chmod 755 *
@@ -428,21 +455,36 @@ rm -rf /tmp/openvpnscripts/
 exit
 else
 UNAME=$(uname -m)
-if [ "$VERSION" = "5" ] && [ "$UNAME" = "i686" ]
+if [ "$VERSION" = "5.9" ] && [ "$UNAME" = "i686" ]
 then
-wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
-rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.i386.rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el5.rf.i386.rpm
+wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+elif [ "$VERSION" = "5.9" ] && [ "$UNAME" = "x_86_64" ]
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.$(uname -m).rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+wget http://safesrv.net/public/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+elif [ "$UNAME" = "i386" ]
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
 wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
 unzip openvpn-auth-pam.zip
 mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
 else
-wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
-rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+wget http://safesrv.net/public/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
 fi
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
-cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/ /etc/openvpn/
+cp -R /usr/share/doc/openvpn-2.3.2/easy-rsa/ /etc/openvpn/
 cd /etc/openvpn/easy-rsa/2.0
 chmod 755 *
 rm -f /etc/openvpn/easy-rsa/2.0/vars
