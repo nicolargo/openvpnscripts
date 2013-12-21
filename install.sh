@@ -1,67 +1,77 @@
 #!/bin/bash
 # centos 6 , ubuntu and debian
-# vérifier si la distribution et de type debian ou read hat
-if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UTF-8" ]; then
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m######################openv""\033[00m""\033[37mpn Instalation "automatique"\033[00m""\033[31m en francais###############""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-echo -e "\033[34m###########################""\033[00m""\033[37m###########################""\033[00m""\033[31m##########################""\033[00m"
-
-
-echo "Entrez les premierre lettre de votre pays en majuscule"
-echo "ex : pour la france FR"
-read -e -p "Entrez les premierre lettre de votre pays en majuscule  : " country
-read -e -p "Entrez le numero de votre departemant : " dep
-read -e -p "Entrez le numéro de port qui sera utilise par le serveur (recommander 443) : " port
-cat > /etc/openvpnport <<EOF
-$port
-EOF
-read -e -p "Entrez le protocol udp ou tcp (recommander tcp) : " proto
-cat > /etc/openvpnproto<<EOF
-$proto
-EOF
-read -e -p " Entrez le nom de votre ville : " ville
-read -e -p "Entrez le nom de votre entreprise ou si vous ete un particulier entrez le nom de votre serveur : " org
-read -e -p "Entrez votre adresse mail : " email
+version="0.5"
+#create log file
+logfile=/var/log/openvpn-auto-install.log
+exec > >(tee $logfile)
+exec 2>&1
+# check system compatibility
+echo "detect system"
+BITS=$(uname -m | sed 's/x86_//;s/i[3-6]86/32/')
+if [ -f /etc/lsb-release ]; then
+  OS=$(cat /etc/lsb-release | grep DISTRIB_ID | sed 's/^.*=//')
+  VERSION=$(cat /etc/lsb-release | grep DISTRIB_RELEASE | sed 's/^.*=//')
+if [ "$OS" = "Ubuntu" ] || [ "$OS" = "Debian" ] && [ "$VERSION" = "12.04" ] || [ "$VERSION" = "12.10" ] || [ "$VERSION" = "13.04" ] || [ "$VERSION" = "13.10" ] || [ "$VERSION" = "6" ] || [ "$VERSION" = "7" ] ;then
+echo "$OS $VERSION $BITS ok"
+elif [ -f /etc/centos-release ]; then
+OS=CentOS
+VERSION=$(cat /etc/centos-release | sed 's/^.*release //;s/ (Fin.*$//')
+if [ "$VERSION" = "5.9" ] || [ "$VERSION" = "6" ] || [ "$VERSION" = "6.1" ] || [ "$VERSION" = "6.2" ] || [ "$VERSION" = "6.3" ] || [ "$VERSION" = "6.4" ] || [ "$VERSION" = "6.5" ] ; then
+echo "$OS $VERSION $BITS ok"
+elif [ -f /etc/redhat-release ]; then
+VERSION=$(cat /etc/redhat-release | sed 's/^.*release //;s/ (Fin.*$//')
+if [ "$VERSION" = "17" ] || [ "$VERSION" = "18" ] || [ "$VERSION" = "19" ] ; then
+OS=Fedora
+echo "$OS $VERSION $BITS ok"
 else
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "##########################Openvpn Auto Install English##########################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
-echo "################################################################################"
+echo "your system $OS $VERSION $BITS is not compatible with this script"
+exit
+fi
+fi
+else
+OS=$(uname -s)
+VERSION=$(uname -r)
+echo "your system $OS $VERSION $BITS is not compatible with this script"
+exit
+fi
+fi
+mkdir /etc/openvpnlang
+cp openvpnscripts/fr.sh /etc/openvpnlang
+cp openvpnscripts/en.sh /etc/openvpnlang
+
+while true; do
+clear
+echo -e "----------------------------"
+echo -e " openvpn auto Install v $version"
+echo -e "----------------------------"
+echo "To continue in English, type e"
+echo "Pour continuer en Français, tapez f"
+echo "To Exit / Pour quitter : CTRL-C"
+read -e -p "? " lang
+   case $lang in
+     [e]* ) LANGUAGE=en.sh && break;;
+     [f]* ) LANGUAGE=fr.sh && break;;
+   esac
+done
+source /etc/openvpnlang/$LANGUAGE
 
 
-
-echo "Enter the first letter of your country in uppercase"
-echo "eg : for France FR"
-read -e -p "Enter the first letter of your country in uppercase  : " country
-read -e -p "Enter the number of your department : " dep
-read -e -p "Enter the port number that will be used by the server (443 recommended) : " port
+echo -e $country1
+echo -e $country2
+read -e -p "$country3" country
+read -e -p "$dep1" dep
+read -e -p "$port1" port
 cat > /etc/openvpnport <<EOF
 $port
 EOF
-read -e -p "Enter the protocol tcp or udp (tcp recommended) : " proto
+read -e -p "$proto1" proto
 cat > /etc/openvpnproto<<EOF
 $proto
 EOF
-read -e -p "Enter the name of your city : " ville
-read -e -p "Enter your company name or if particular enter the name of the server : " org
-read -e -p "Enter your email address : " email
-fi
+read -e -p "$city" ville
+read -e -p "$org1" org
+read -e -p "$mail" email
+
 
 if [ -f /etc/debian_version ]
 then
@@ -238,28 +248,19 @@ rm -rf /tmp/openvpnscripts/
 else
 cd /root
 yum -y update
-if [ "$LANG" = "fr_FR" -o "$LANG" = "fr_FR.UTF-8" ]; then
-echo "Entrez votre numéro de version de read-hat"
-echo "ex: pour centos 6 entrez 6 pour centos 5 entrez 5 pour fedora 17 entrez 17 pour fedora 18 entrez 18"
-read -e -p "Entrez votre numéro de version de read-hat : " VERSION
-else
-echo "Enter the version number of read-hat"
-echo "eg: centos 6 to enter 6 centos 5 to enter 5 fedora 17 to 17 fedora 18 to 18"
-read -e -p "Enter the version number of read-hat : " VERSION
-fi
 yum -y install gcc make iptables rpm-build autoconf.noarch zlib-devel pam-devel openssl-devel wget chkconfig zip unzip sudo
 wget http://openvpn.net/release/lzo-1.08-4.rf.src.rpm
 rpmbuild --rebuild lzo-1.08-4.rf.src.rpm
-if [ "$VERSION" = "17" -o "$VERSION" = "18" ]
-then
+if [ "$OS" = "Fedora" ] ;then
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
 cd /etc/openvpn
 git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
 mkdir /etc/openvpn/easy-rsa
-cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/* /etc/openvpn/easy-rsa
+cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa
 rm -rf /etc/openvpn/test
+chown -R $USER /etc/openvpn/easy-rsa/
 cd /etc/openvpn/easy-rsa/
 chmod 755 *
 rm -f /etc/openvpn/easy-rsa/vars
@@ -428,21 +429,41 @@ rm -rf /tmp/openvpnscripts/
 exit
 else
 UNAME=$(uname -m)
-if [ "$VERSION" = "5" ] && [ "$UNAME" = "i686" ]
+if [ "$VERSION" = "5.9" ] && [ "$UNAME" = "i686" ]
 then
-wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
-rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.i386.rpm
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.i386.rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el5.rf.i386.rpm
+wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+elif [ "$VERSION" = "5.9" ] && [ "$UNAME" = "x_86_64" ] ; then
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.$(uname -m).rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+wget http://safesrv.net/public/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
+elif [ "$UNAME" = "i386" ] ; then
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
 wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
 unzip openvpn-auth-pam.zip
 mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
 else
-wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
-rpm -Uvh rpmforge-release-0.5.2-2.el$VERSION.rf.$(uname -m).rpm
+wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
+wget http://safesrv.net/public/openvpn-auth-pam.zip
+unzip openvpn-auth-pam.zip
+mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
 fi
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
-cp -R /usr/share/doc/openvpn-2.2.2/easy-rsa/ /etc/openvpn/
+cd /etc/openvpn
+git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
+mkdir -p /etc/openvpn/easy-rsa/2.0
+cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa/2.0
+rm -rf /etc/openvpn/test
+chown -R $USER /etc/openvpn/easy-rsa/2.0
 cd /etc/openvpn/easy-rsa/2.0
 chmod 755 *
 rm -f /etc/openvpn/easy-rsa/2.0/vars

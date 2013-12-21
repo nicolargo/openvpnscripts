@@ -1,4 +1,4 @@
-Version 0.4
+Version 0.5
 
 Correction d'un bug sur l'installation centos
 
@@ -8,6 +8,14 @@ Authentification automatique sans fournir le nom d'utilisateur et le mot de pass
 
 
 Automatic authentication without providing the username and password for centos
+
+ajout d'un système multilangue complet français anglais
+
+add complete multi language system french and english
+
+ajout compatibilité openvpn 2.3.2
+
+add compatibility openvpn 2.3.2
 
 ce script a était conçu pour vous permettre d'installer et de configurer automatique et facilement openvpn sur votre serveur
 
