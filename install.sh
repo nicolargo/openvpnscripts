@@ -258,8 +258,9 @@ yum install openvpn -y
 cd /etc/openvpn
 git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
 mkdir /etc/openvpn/easy-rsa
-cp -R /usr/share/doc/openvpn-2.3.2/easy-rsa/* /etc/openvpn/easy-rsa
+cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa
 rm -rf /etc/openvpn/test
+chown -R $USER /etc/openvpn/easy-rsa/
 cd /etc/openvpn/easy-rsa/
 chmod 755 *
 rm -f /etc/openvpn/easy-rsa/vars
@@ -457,7 +458,12 @@ fi
 rpm -Uvh lzo-*.rpm
 rm lzo-*.rpm
 yum install openvpn -y
-cp -R /usr/share/doc/openvpn-2.3.2/easy-rsa/ /etc/openvpn/
+cd /etc/openvpn
+git clone git://github.com/andykimpe/easy-rsa.git /etc/openvpn/test
+mkdir -p /etc/openvpn/easy-rsa/2.0
+cp -R /etc/openvpn/test/easy-rsa/2.0/* /etc/openvpn/easy-rsa/2.0
+rm -rf /etc/openvpn/test
+chown -R $USER /etc/openvpn/easy-rsa/2.0
 cd /etc/openvpn/easy-rsa/2.0
 chmod 755 *
 rm -f /etc/openvpn/easy-rsa/2.0/vars
