@@ -7,3 +7,4 @@ port1="Entrez le numéro de port qui sera utilise par le serveur (recommander 44
 proto1="Entrez le protocol udp ou tcp (recommander tcp) : "
 city="Entrez le nom de votre ville : "
 org1="Entrez le nom de votre entreprise ou si vous ete un particulier entrez le nom de votre serveur : "
+mail="Entrez votre adresse mail : "
