@@ -41,9 +41,9 @@ cp openvpnscripts/en.sh /etc/openvpnlang
 
 while true; do
 clear
-echo -e "---------------------------"
+echo -e "----------------------------"
 echo -e " openvpn auto Install v $version"
-echo -e "---------------------------"
+echo -e "----------------------------"
 echo "To continue in English, type e"
 echo "Pour continuer en Français, tapez f"
 echo "To Exit / Pour quitter : CTRL-C"
