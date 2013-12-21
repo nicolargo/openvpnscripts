@@ -39,13 +39,14 @@ mkdir /etc/openvpnlang
 cp openvpnscripts/fr.sh /etc/openvpnlang
 cp openvpnscripts/en.sh /etc/openvpnlang
 
+while true; do
+clear
 echo -e "-------------------------------"
 echo -e "openvpn auto Install v $version"
 echo -e "-------------------------------"
 echo "To continue in English, type e"
 echo "Pour continuer en Français, tapez f"
 echo "To Exit / Pour quitter : CTRL-C"
-while true; do
 read -e -p "? " lang
    case $lang in
      [e]* ) LANGUAGE=en.sh && break;;
