@@ -435,13 +435,13 @@ rpm -Uvh rpmforge-release-0.5.2-2.el5.rf.i386.rpm
 wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
 unzip openvpn-auth-pam.zip
 mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
-elif [ "$VERSION" = "5.9" ] && [ "$UNAME" = "x_86_64" ]
+elif [ "$VERSION" = "5.9" ] && [ "$UNAME" = "x_86_64" ] ; then
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el5.rf.$(uname -m).rpm
 rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
 wget http://safesrv.net/public/openvpn-auth-pam.zip
 unzip openvpn-auth-pam.zip
 mv openvpn-auth-pam.so /etc/openvpn/openvpn-auth-pam.so
-elif [ "$UNAME" = "i386" ]
+elif [ "$UNAME" = "i386" ] ; then
 wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
 rpm -Uvh rpmforge-release-0.5.2-2.el6.rf.$(uname -m).rpm
 wget http://safesrv.net/public/dl/openvpn-auth-pam.zip
