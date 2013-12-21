@@ -7,3 +7,4 @@ port1="Enter the port number that will be used by the server (443 recommended) :
 proto1="Enter the protocol tcp or udp (tcp recommended) : "
 city="Enter the name of your city : "
 org1="Enter your company name or if particular enter the name of the server : "
+mail="Enter your email address : "
